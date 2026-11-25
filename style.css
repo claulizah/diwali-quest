@@ -188,3 +188,22 @@ body.nobar #bar { display: none; }
   .diya.lit .flame, .diya.fill .flame { animation: none; }
   .track i, .verdict, .petal, .wish { transition-duration: .01s; }
 }
+
+/* Brand band: Levi's logo + team line */
+#brand { position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 40; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 14px;
+  background: linear-gradient(90deg, #2B0B45, #0B1230 50%, #2B0B45); border-bottom: 3px solid transparent;
+  border-image: linear-gradient(90deg, #E8467C, #FF9F1C, #FFD166, #2EC4B6, #7B5CE0) 1; }
+#brand img { height: 34px; width: auto; display: block; }
+#brand span { display: flex; flex-direction: column; line-height: 1.15; border-left: 2px dashed rgba(233,180,65,.7); padding-left: 14px; }
+#brand b { font-weight: 700; font-size: .95rem; color: #FFD166; letter-spacing: .04em; text-transform: uppercase; }
+#brand i { font-style: normal; font-size: .85rem; color: #FFF3D6; }
+body { padding-top: 56px; }
+body.host #stage { top: 56px; }
+body.host #brand { height: 64px; }
+body.host { padding-top: 64px; }
+body.host #stage { top: 64px; }
+body.host #brand img { height: 42px; }
+body.host #brand b { font-size: 1.1rem; }
+body.host #brand i { font-size: 1rem; }
+#net { top: 56px; }
+body.host #net { top: 64px; }
