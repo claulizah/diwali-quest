@@ -207,3 +207,10 @@ body.host #brand b { font-size: 1.1rem; }
 body.host #brand i { font-size: 1rem; }
 #net { top: 56px; }
 body.host #net { top: 64px; }
+
+.nameform { margin-top: 6px; padding: 16px; border-radius: 16px; background: rgba(255,243,214,.07); text-align: left; display: flex; flex-direction: column; gap: 10px; }
+.nameform label { font-weight: 700; color: #FFD166; }
+.nameform .nrow { display: flex; gap: 10px; }
+.nameform input { flex: 1; min-width: 0; font: inherit; font-size: 1.1rem; padding: 12px 14px; border-radius: 12px; border: 2px solid #E9B441; background: #0B1230; color: #FFF3D6; }
+.nameform input::placeholder { color: #A8B2D8; }
+.nameform .go { position: static; width: auto; padding: 12px 22px; }

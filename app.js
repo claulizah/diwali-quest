@@ -155,7 +155,10 @@ function playerApp() {
       return `<div class="wrap center">${head('Diwali Quest')}
         <div class="bigdiya">${diya('lit')}</div>
         <h1 class="ptitle">You're in.</h1>
-        <p class="pq">Welcome, ${esc(alias)}. We're waiting for the first light. Keep this page open.</p>
+        <p class="pq">Welcome, <b id="myname">${esc(alias)}</b>. We're waiting for the first light. Keep this page open.</p>
+        <form class="nameform stitch" id="nameform"><label for="nameinp">Want your name on the big screen?</label>
+          <div class="nrow"><input id="nameinp" maxlength="24" autocomplete="off" autocapitalize="words" placeholder="Type your name" value="${store.get('dq_named') ? esc(alias) : ''}"><button class="go" type="submit">Save</button></div>
+          <p class="note" id="namemsg">${store.get('dq_named') ? 'Saved. You can change it until we start.' : 'Optional. Otherwise you are a surprise diya.'}</p></form>
         <p class="note" id="players">${S.players} ${S.players === 1 ? 'diya' : 'diyas'} lit so far</p></div>`;
     }
     if (phase === 'voting' && level >= 1 && level <= 5) {
@@ -203,6 +206,21 @@ function playerApp() {
     }
   }
   const setMsg = (t, ok) => { const m = $('#msg'); if (m) { m.textContent = t; m.classList.toggle('ok', !!ok); } };
+
+  app.addEventListener('submit', async (e) => {
+    if (e.target.id !== 'nameform') return;
+    e.preventDefault();
+    const v = $('#nameinp').value.replace(/\s+/g, ' ').trim().slice(0, 24);
+    const m = $('#namemsg');
+    if (!v) { m.textContent = 'Type a name first.'; return; }
+    try {
+      await rpc('dq_rename', { p_player: pid, p_alias: v });
+      alias = v; store.set('dq_alias', v); store.set('dq_named', '1'); joined = true;
+      const n = $('#myname'); if (n) n.textContent = v;
+      const w = document.querySelector('.phead .who'); if (w) w.textContent = v;
+      m.textContent = 'Saved. You can change it until we start.';
+    } catch (err) { m.textContent = "Couldn't save. Try again."; }
+  });
 
   app.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-act]');
