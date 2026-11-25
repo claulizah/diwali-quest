@@ -143,7 +143,7 @@ function playerApp() {
   }
   async function refreshMe() {
     const m = await rpc('dq_me', { p_player: pid });
-    if (m && m.known === false) { joined = false; await ensureJoined(); }
+    if (m && m.known === false && !stale) { joined = false; await ensureJoined(); }
     else if (m) { me = { votes: m.votes || {}, preds: m.preds || [], score: m.score }; if (m.alias) alias = m.alias; }
     if (me.preds.length === 5) draft = me.preds.slice();
   }
@@ -267,10 +267,22 @@ function playerApp() {
     if (on && n) n.remove();
   };
 
+  let epoch = '', stale = false;
+  function paintStale() {
+    app.innerHTML = `<div class="wrap center">${head('Diwali Quest')}<div class="bigdiya">${diya('lit')}</div>
+      <h1 class="ptitle">The game was restarted</h1><p class="pq">Tap below to join the new round.</p>
+      <button class="go" id="rejoin" style="position:static;width:auto;padding:14px 28px">Join again</button></div>`;
+    $('#rejoin').onclick = () => location.reload();
+  }
+
   async function poll() {
     try {
       await ensureJoined();
       const s = await rpc('dq_state');
+      if (s.epoch) {
+        if (!epoch) epoch = s.epoch;
+        else if (s.epoch !== epoch) { stale = true; paintStale(); return; }
+      }
       offset = Date.parse(s.now) - Date.now();
       const k = s.phase + ':' + s.level;
       const changed = k !== key;
